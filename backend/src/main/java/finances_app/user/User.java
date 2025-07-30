@@ -14,13 +14,31 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long userId;
 
-    /**
-     * String is name of the account
-     *
-     */
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Account> accounts;
 
 
+    public String getUsername() {
+        return username;
+    }
 
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public List<Account> getAccounts() {
+        return accounts;
+    }
+
+    public void setAccounts(List<Account> accounts) {
+        this.accounts = accounts;
+    }
 }
