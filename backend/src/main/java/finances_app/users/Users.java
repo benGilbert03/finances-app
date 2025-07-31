@@ -1,4 +1,4 @@
-package finances_app.user;
+package finances_app.users;
 
 import java.util.List;
 
@@ -7,14 +7,14 @@ import finances_app.account.Account;
 import jakarta.persistence.*;
 
 @Entity
-public class User {
+public class Users {
     private String username;
     private String password;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long userId;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
     private List<Account> accounts;
 
 

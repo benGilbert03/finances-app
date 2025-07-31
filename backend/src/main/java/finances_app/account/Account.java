@@ -1,6 +1,6 @@
 package finances_app.account;
 
-import finances_app.user.User;
+import finances_app.users.Users;
 import jakarta.persistence.*;
 
 /**
@@ -16,8 +16,8 @@ public class Account {
     private long accountId;
 
     @ManyToOne
-    @JoinColumn(name = "userId")
-    private User user;
+    @JoinColumn(name = "users_id")
+    private Users users;
 
 
     /**
