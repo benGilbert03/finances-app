@@ -1,30 +1,45 @@
 package finances_app.account;
 
-import finances_app.users.Users;
+import java.util.List;
+
+import finances_app.budget.Budget;
 import jakarta.persistence.*;
 
-/**
- * @author Ben Gilbert
- */
 @Entity
 public class Account {
-    private String name;
-    private double balance;
+    private String username;
+    private String password;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long accountId;
+    private long id;
 
-    @ManyToOne
-    @JoinColumn(name = "users_id")
-    private Users users;
+    @OneToMany
+    @JoinColumn(name = "budget_id")
+    private List<Budget> budgets;
 
 
-    /**
-     * Constructor that initializes an Account
-     */
-    public Account() {
-        this.name = "";
-        this.balance = 0.0;
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
