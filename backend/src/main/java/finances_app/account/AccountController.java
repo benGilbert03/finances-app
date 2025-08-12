@@ -15,30 +15,36 @@ public class AccountController {
     private String username_exists = "{\"message\":\"username already in use\"}";
 
 
-    @GetMapping(path = "/Account")
+    @GetMapping(path = "/account")
     List<Account> getAllAccounts() {
         return accountRepo.findAll();
     }
 
-    @GetMapping(path = "/Account/{username}")
-    Account getUserByUsername(@PathVariable String username) {
+    @GetMapping(path = "/account/username/{username}")
+    Account getAccountByUsername(@PathVariable String username) {
         Account account = accountRepo.findByUsername(username);
         return account;
     }
 
+    @GetMapping(path = "/account/id/{id}")
+    Account getAccountById(@PathVariable long id) {
+        Account account = accountRepo.findById(id);
+        return account;
+    }
 
-    @PostMapping(path = "/Account")
-    String postUser(@RequestBody Account account){
+
+    @PostMapping(path = "/account")
+    long postAccount(@RequestBody Account account){
         if (accountRepo.findByUsername(account.getUsername()) == null) {
             accountRepo.save(account);
-            return success;
+            return account.getId();
         } else {
-            return username_exists;
+            return -1;
         }
     }
 
-    @DeleteMapping(path = "/Account/{username}")
-    String deleteUserByUsername(@PathVariable String username) {
+    @DeleteMapping(path = "/account/{username}")
+    String deleteAccountByUsername(@PathVariable String username) {
         Account account = accountRepo.findByUsername(username);
         if (account == null) {
             return failure;

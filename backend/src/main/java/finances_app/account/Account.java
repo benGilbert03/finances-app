@@ -14,8 +14,7 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @OneToMany
-    @JoinColumn(name = "budget_id")
+    @OneToMany(mappedBy = "account")
     private List<Budget> budgets;
 
 

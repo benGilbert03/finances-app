@@ -1,5 +1,6 @@
-finances_app\user\UserController.class
-finances_app\MyApplication.class
-finances_app\user\User.class
-finances_app\user\UserRepository.class
+finances_app\Main.class
 finances_app\account\Account.class
+finances_app\account\AccountController.class
+finances_app\budget\Frequency.class
+finances_app\account\AccountRepository.class
+finances_app\budget\Budget.class
