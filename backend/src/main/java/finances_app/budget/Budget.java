@@ -25,6 +25,17 @@ public class Budget {
     @JoinColumn(name = "account_id")
     private Account account;
 
+    public Budget() {
+    }
+
+    public Budget(Frequency frequency) {
+        this.frequency = frequency;
+        totalBudget = 0.0;
+        totalSpend = 0.0;
+        this.categoryBudget = new HashMap<String, Double>();
+        this.categorySpend = new HashMap<String, Double>();
+    }
+
     public long getId() {
         return id;
     }
@@ -71,7 +82,7 @@ public class Budget {
 
     public void updateBudgetCategory(String category, double newAmount) {
         Double oldAmount = categoryBudget.put(category, newAmount);
-        if (oldAmount.equals(null)) {
+        if (oldAmount == null) {
             totalBudget += newAmount;
         } else {
             totalBudget = totalBudget - oldAmount.doubleValue() + newAmount;
@@ -80,7 +91,7 @@ public class Budget {
 
     public void updateSpendCategory(String category, double newAmount) {
         Double oldAmount = categorySpend.put(category, newAmount);
-        if (oldAmount.equals(null)) {
+        if (oldAmount == null) {
             totalSpend += newAmount;
         } else {
             totalSpend = totalSpend - oldAmount.doubleValue() + newAmount;

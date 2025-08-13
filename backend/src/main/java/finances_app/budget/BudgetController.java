@@ -21,16 +21,23 @@ class BudgetController {
         return budgetRepo.findAll();
     }
 
-    @GetMapping(path = "/budget/{accountId}")
+    @GetMapping(path = "/budget/account/{accountId}")
     List<Budget> getBudgetsByAccountId(@PathVariable long accountId) {
         Account account = accountRepo.findById(accountId);
         return budgetRepo.findAllByAccount(account);
     }
 
-    @PostMapping(path = "/budget")
-    long postBudget(@RequestBody Budget budget) {
-        budgetRepo.save(budget);
-        return budget.getId();
+    @GetMapping(path = "/budget/budget/{budgetId}")
+    Budget getBudgetById(@PathVariable long budgetId) {
+        return budgetRepo.findById(budgetId);
+    }
+
+    @PostMapping(path = "/budget/{frequency}")
+    long postBudget(@PathVariable Frequency frequency) {
+        Budget b = new Budget(frequency);
+
+        budgetRepo.save(b);
+        return b.getId();
     }
 
     @PutMapping(path = "/budget/account")
@@ -46,8 +53,40 @@ class BudgetController {
         }
     }
 
+    @PutMapping(path = "/budget/budget/{id}/{category}/{amount}")
+    String modifyBudgetCategoryByBudgetId(@PathVariable long id, @PathVariable String category, @PathVariable double amount) {
+        if (budgetRepo.findById(id) == null) {
+            return failure;
+        } else {
+            Budget budget = budgetRepo.findById(id);
+            budget.updateBudgetCategory(category, amount);
+            budgetRepo.save(budget);
+            return success;
+        }
+    }
 
+    @PutMapping(path = "/budget/spend/{id}/{category}/{amount}")
+    String modifySpendCategoryByBudgetId(@PathVariable long id, @PathVariable String category, @PathVariable double amount) {
+        if (budgetRepo.findById(id) == null) {
+            return failure;
+        } else {
+            Budget budget = budgetRepo.findById(id);
+            budget.updateSpendCategory(category, amount);
+            budgetRepo.save(budget);
+            return success;
+        }
+    }
 
+    @DeleteMapping(path = "/budget/(id)")
+    String deleteBudgetById(@RequestParam long id) {
+        Budget budget = budgetRepo.findById(id);
+        if (budget == null) {
+            return failure;
+        } else {
+            budgetRepo.delete(budget);
+            return success;
+        }
+    }
 
 //    @PutMapping(path = "/budget/{id}")
 //    String putBudgetById(@PathVariable long id, @RequestBody Budget newBudget) {
