@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 public class AccountController {
     @Autowired
     AccountRepository accountRepo;
@@ -38,6 +39,16 @@ public class AccountController {
         if (accountRepo.findByUsername(account.getUsername()) == null) {
             accountRepo.save(account);
             return account.getId();
+        } else {
+            return -1;
+        }
+    }
+
+    @PostMapping(path = "/account/login")
+    long login(@RequestBody Account account) {
+        Account existing = accountRepo.findByUsername(account.getUsername());
+        if (existing != null && existing.getPassword().equals(account.getPassword())) {
+            return existing.getId();
         } else {
             return -1;
         }
