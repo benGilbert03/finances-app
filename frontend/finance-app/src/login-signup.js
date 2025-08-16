@@ -4,6 +4,7 @@ import axios from "axios";
 function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [userId, setUserId] = useState(-1);
   const [error, setError] = useState("");
 
   const handleSubmit = async (e) => {
@@ -21,8 +22,9 @@ function Login() {
         { username, password } 
       );
 
-      if (response.data.message === "success") {
+      if (response.data > 0) {
         alert("Login successful");
+        setUserId(response.data);
       } else {
         setError("Invalid username or password");
         console.log(username);
