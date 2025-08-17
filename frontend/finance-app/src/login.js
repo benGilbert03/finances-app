@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom"
 import axios from "axios";
 
 function Login() {
@@ -6,6 +7,7 @@ function Login() {
   const [password, setPassword] = useState("");
   const [userId, setUserId] = useState(-1);
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -25,6 +27,7 @@ function Login() {
       if (response.data > 0) {
         alert("Login successful");
         setUserId(response.data);
+        navigate("/home")
       } else {
         setError("Invalid username or password");
         console.log(username);
@@ -39,18 +42,10 @@ function Login() {
       <form onSubmit={handleSubmit} style={{ textAlign: "center"}}>
         <input type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)}></input> <br/>
         <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)}></input> <br/>
-        <button type="submit">Login</button>
+        <button type="submit"> Login </button>
         {error && <p style={{ color: "red"}}>{error}</p>}
       </form>
   );
 }
 
-function LoginSignup() {
-  return (
-    <div>
-      <Login />
-    </div>
-  );
-}
-
-export default LoginSignup;
+export default Login;
