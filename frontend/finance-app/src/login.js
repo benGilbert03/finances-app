@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { UserContext } from "./UserContext";
 import { useNavigate } from "react-router-dom"
 import axios from "axios";
 
 function Login() {
+  const { setUserId } = useContext(UserContext);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [userId, setUserId] = useState(-1);
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
@@ -25,13 +26,10 @@ function Login() {
       );
 
       if (response.data > 0) {
-        alert("Login successful");
         setUserId(response.data);
         navigate("/home")
       } else {
         setError("Invalid username or password");
-        console.log(username);
-        console.log(password);
       }
     } catch (err) {
       setError("Error connecting to server")
