@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 import { UserContext } from './UserContext';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Login from './login';
+import Login from './pages/login';
 import Home from './home';
-import Start from './start'
+import Start from './pages/start'
 
 function App() {
     const [userId, setUserId] = useState(-1);
