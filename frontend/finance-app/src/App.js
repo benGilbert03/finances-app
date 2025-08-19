@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import { UserContext } from './UserContext';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Login from './pages/login';
-import Home from './home';
+import Home from './pages/home';
 import Start from './pages/start'
 
 function App() {
