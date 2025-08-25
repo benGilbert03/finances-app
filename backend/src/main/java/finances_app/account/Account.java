@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 
 @Entity
 public class Account {
+    @Column(unique = true)
     private String username;
     private String password;
 

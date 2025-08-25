@@ -32,15 +32,20 @@ function Login() {
         setError("Invalid username or password");
       }
     } catch (err) {
-      setError("Error connecting to server")
+      setError("Error connecting to server");
     }
   };
+
+  const goToSignUp = (e) => {
+    navigate("/sign-up")
+  }
 
   return (
       <form onSubmit={handleSubmit} style={{ textAlign: "center"}}>
         <input type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)}></input> <br/>
         <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)}></input> <br/>
-        <button type="submit"> Login </button>
+        <button type="submit"> Login </button> <br/>
+        <button onClick={goToSignUp}>Go to Sign Up</button>
         {error && <p style={{ color: "red"}}>{error}</p>}
       </form>
   );

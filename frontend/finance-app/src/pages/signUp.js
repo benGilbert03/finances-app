@@ -14,15 +14,43 @@ function SignUp() {
         e.preventDefault();
         setError("");
 
+        if (!username || !password) {
+            setError("Please fill in both fields.");
+            return;
+        }
 
+        try {
+            const response = await axios.post(
+                "http://localhost:8080/account",
+                { username, password }
+            );
+
+            if (response.data > 0) {
+                setUserId(response.data);
+                navigate("/home")
+            } else {
+                setError("That username has already been taken");
+            }
+        } catch (err) {
+            setError("Error connecting to server");
+        }
+    }
+
+    const goToLogin = (e) => {
+        navigate("/login")
     }
 
     return (
-        <form onSubmit={handleSubmit} style={{ textAlign: "center" }}>
-            <input type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)}></input> <br/>
-            <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)}></input> <br/>
-            <button type="submit">Sign Up</button>
-        </form>
+        <div>
+            <form onSubmit={handleSubmit} style={{ textAlign: "center" }}>
+                <input type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)}></input> <br/>
+                <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)}></input> <br/>
+                <button type="submit">Sign Up</button> <br/>
+                <button onClick={goToLogin}>Go to Login</button>
+                {error && <p style = {{ color:"red"}}>{error}</p>} 
+            </form>
+            
+        </div>
     );
 }
 
