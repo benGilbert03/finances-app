@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 class BudgetController {
     @Autowired
     BudgetRepository budgetRepo;
@@ -77,7 +78,40 @@ class BudgetController {
         }
     }
 
-    @DeleteMapping(path = "/budget/(id)")
+    @PutMapping(path = "budget/name/{id}/{name}")
+    String modifyBudgetNameById(@PathVariable long id, @PathVariable String name) {
+        if (budgetRepo.findById(id) == null) {
+            return failure;
+        } else {
+            Budget budget = budgetRepo.findById(id);
+            budget.setName(name);
+            budgetRepo.save(budget);
+            return success;
+        }
+    }
+
+    @PutMapping(path = "/budget/rename-category/{id}/{oldName}/{newName}")
+    public String renameCategory(@PathVariable long id, @PathVariable String oldName, @PathVariable String newName) {
+        Budget budget = budgetRepo.findById(id);
+        if (budget == null) return failure;
+
+        // Transfer Budget Limit
+        if (budget.getCategoryBudget().containsKey(oldName)) {
+            Double limit = budget.getCategoryBudget().remove(oldName);
+            budget.getCategoryBudget().put(newName, limit);
+        }
+
+        // Transfer Spent Amount
+        if (budget.getCategorySpend().containsKey(oldName)) {
+            Double spent = budget.getCategorySpend().remove(oldName);
+            budget.getCategorySpend().put(newName, spent);
+        }
+
+        budgetRepo.save(budget);
+        return success;
+    }
+
+    @DeleteMapping(path = "/budget/{id}")
     String deleteBudgetById(@RequestParam long id) {
         Budget budget = budgetRepo.findById(id);
         if (budget == null) {
@@ -87,16 +121,4 @@ class BudgetController {
             return success;
         }
     }
-
-//    @PutMapping(path = "/budget/{id}")
-//    String putBudgetById(@PathVariable long id, @RequestBody Budget newBudget) {
-//        Budget oldBudget = budgetRepo.findById(id);
-//        if (oldBudget == null) {
-//            return failure;
-//        } else {
-//            if (newBudget.getCategoryBudget() != null) {
-//                oldBudget.setCategoryBudget(newBudget.getCategoryBudget());
-//            }
-//        }
-//    }
 }

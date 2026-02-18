@@ -4,6 +4,7 @@ import finances_app.account.Account;
 import jakarta.persistence.*;
 
 import java.util.HashMap;
+import java.util.Map;
 
 @Entity
 public class Budget {
@@ -11,15 +12,27 @@ public class Budget {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+
+
+    private String name;
+
     private Frequency frequency;
 
     private double totalBudget;
 
     private double totalSpend;
 
-    private HashMap<String, Double> categoryBudget;
-    
-    private HashMap<String, Double> categorySpend;
+    @ElementCollection
+    @CollectionTable(name = "budget_category_limits", joinColumns = @JoinColumn(name = "budget_id"))
+    @MapKeyColumn(name = "category_name")
+    @Column(name = "limit_amount")
+    private Map<String, Double> categoryBudget = new HashMap<>();
+
+    @ElementCollection
+    @CollectionTable(name = "budget_category_spend", joinColumns = @JoinColumn(name = "budget_id"))
+    @MapKeyColumn(name = "category_name")
+    @Column(name = "spend_amount")
+    private Map<String, Double> categorySpend = new HashMap<>();
 
     @ManyToOne
     @JoinColumn(name = "account_id")
@@ -30,10 +43,11 @@ public class Budget {
 
     public Budget(Frequency frequency) {
         this.frequency = frequency;
+        name = "";
         totalBudget = 0.0;
         totalSpend = 0.0;
-        this.categoryBudget = new HashMap<String, Double>();
-        this.categorySpend = new HashMap<String, Double>();
+        this.categoryBudget = new HashMap<>();
+        this.categorySpend = new HashMap<>();
     }
 
     public long getId() {
@@ -48,19 +62,19 @@ public class Budget {
         this.frequency = frequency;
     }
 
-    public HashMap<String, Double> getCategoryBudget() {
+    public Map<String, Double> getCategoryBudget() {
         return categoryBudget;
     }
 
-    public void setCategoryBudget(HashMap<String, Double> categoryBudget) {
+    public void setCategoryBudget(Map<String, Double> categoryBudget) {
         this.categoryBudget = categoryBudget;
     }
 
-    public HashMap<String, Double> getCategorySpend() {
+    public Map<String, Double> getCategorySpend() {
         return categorySpend;
     }
 
-    public void setCategorySpend(HashMap<String, Double> categorySpend) {
+    public void setCategorySpend(Map<String, Double> categorySpend) {
         this.categorySpend = categorySpend;
     }
 
@@ -78,6 +92,14 @@ public class Budget {
 
     public double getTotalSpend() {
         return this.totalSpend;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public void updateBudgetCategory(String category, double newAmount) {
